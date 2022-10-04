@@ -30,11 +30,11 @@ const sampleThree = yup.object().shape({
     .min(1, 'The quantity of seeds must be bigger than 0')
 });
 
-//Passo 9 ou 7B
-export const SampleThree: React.FC<
-  SampleTwoScreenRouteProps
-> = ({ navigation }) => {
-  const { saveStep, getPersistedData } = useSample();
+// Passo 9 ou 7B
+export const SampleThree: React.FC<SampleTwoScreenRouteProps> = ({
+  navigation
+}) => {
+  const { saveStep, getPersistedData, getGrainsEstimation } = useSample();
 
   const {
     control,
@@ -45,6 +45,12 @@ export const SampleThree: React.FC<
     resolver: yupResolver(sampleThree)
   });
 
+  const handleCallAi = async () => {
+    const grains = await getGrainsEstimation();
+    setValue('grainsPlant1', grains.sampleThree.plant1.toString());
+    setValue('grainsPlant2', grains.sampleThree.plant2.toString());
+  };
+
   useEffect(() => {
     getPersistedData().then(data => {
       if (data) {
@@ -53,6 +59,7 @@ export const SampleThree: React.FC<
         setValue('description', data?.plantC?.description || '');
       }
     });
+    handleCallAi();
   }, [getPersistedData, setValue]);
 
   const handleSampleThree = (data: FieldValues) => {
@@ -67,7 +74,6 @@ export const SampleThree: React.FC<
     }
     saveStep(sample);
     navigation.navigate('Plots');
-
   };
 
   return (
@@ -97,9 +103,7 @@ export const SampleThree: React.FC<
           />
           <TextInput
             label="SampleThree.sampleDescription"
-            placeholder={translate(
-              'SampleThree.sampleDescriptionPlaceholder'
-            )}
+            placeholder={translate('SampleThree.sampleDescriptionPlaceholder')}
             icon="check-square"
             name="description"
             control={control}

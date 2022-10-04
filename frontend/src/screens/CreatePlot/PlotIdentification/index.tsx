@@ -29,10 +29,10 @@ const plotIdentification = yup.object().shape({
     .min(9, 'Invalid format ex: 2019/2020)')
 });
 
-//Passo 2
-export const PlotIdentification: React.FC<PlotIdentificationScreenRouteProps> = ({
-  navigation
-}) => {
+// Passo 2
+export const PlotIdentification: React.FC<
+  PlotIdentificationScreenRouteProps
+> = ({ navigation }) => {
   const [options, setOptions] = useState<SelectOptions[]>([]);
   const [propertyId, setPropertyId] = useState('default');
   const [error, setError] = useState('');
@@ -57,7 +57,7 @@ export const PlotIdentification: React.FC<PlotIdentificationScreenRouteProps> = 
       await createPlot({ ...data, propertyId });
       return navigation.navigate('Plots');
     } catch (err) {
-      return Alert.alert('Could not create plot');
+      return Alert.alert(translate(''));
     }
   };
 
@@ -113,13 +113,13 @@ export const PlotIdentification: React.FC<PlotIdentificationScreenRouteProps> = 
             control={control}
             errorMessage={errors?.description?.message}
           />
-          <DateInput
+          <TextInput
             name="plantingDate"
-            control={control}
             icon="calendar"
             label="PlotIdentification.fieldDate"
             errorMessage={errors?.plantingDate?.message}
             placeholder={translate('PlotIdentification.fieldDatePlaceholder')}
+            control={control}
           />
           <TextInputMask
             mask="9999-9999"

@@ -8,7 +8,7 @@ import { BackHandler } from 'react-native';
 import { useTheme } from 'styled-components';
 import { NavigatorProps } from '.';
 import { AuthRoutesParams } from '../data/routes/auth';
-import { NumberPlants } from '../screens/CreatePlot/NumberPlants';
+import { SignIn } from '../screens/SignIn';
 import { SignUp } from '../screens/SignUp';
 
 const Stack = createNativeStackNavigator<AuthRoutesParams>();
@@ -51,8 +51,8 @@ export const AuthRoutes: React.FC<NavigatorProps> = ({ screenOptions }) => {
       }}
     >
       <Stack.Screen
-        name="NumberPlants"
-        component={NumberPlants}
+        name="SignIn"
+        component={SignIn}
         options={{ headerShown: false }}
       />
       <Stack.Screen name="SignUp" component={SignUp} options={options} />

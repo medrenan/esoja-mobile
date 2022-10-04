@@ -3,6 +3,8 @@ import { Alert, ScrollView } from 'react-native';
 import { Button } from '../../../components/Button';
 import { PictureInput } from '../../../components/PictureInput';
 import { StepIndicator } from '../../../components/StepIndicator';
+import { InstructionsModal } from '../../../components/InstructionsModal';
+
 import Title from '../../../components/Title';
 import { PicturePhotosScreenRouteProps } from '../../../data/routes/app';
 import { useAuth } from '../../../hooks/useAuth';
@@ -24,14 +26,26 @@ export const PicturePhotos: React.FC<
   const { isConnected } = useAuth();
   const [image, setImage] = useState('');
   const [loading, setLoading] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
   const { createSample } = useSample();
   const { selectImage } = useUpload();
 
   const handleSelectImage = async () => {
     const uri = await selectImage();
+    if(!uri){
+      errorNoAccess();
+      return;
+    }
     setImage(uri);
   };
+
+  const errorNoAccess = ()=>{
+    Alert.alert(
+        translate("error.cameraAccessDenial.title"),
+        translate("error.cameraAccessDenial.description")
+      );
+  }
 
   const handlePicturePhotos = async () => {
     setLoading(true);
@@ -63,13 +77,13 @@ export const PicturePhotos: React.FC<
                   model="RETANGLE"
                   placeholder="PicturePhotos.imagePlaceholder"
                   updatePictureLabel="PicturePhotos.imageUpdatePictureLabel"
-                  onPress={handleSelectImage}
+                  onPress={() => setModalVisible(!modalVisible)}
                   uri={image}
                 />
               </PictureContainer>
               <NextStepButton>
                 <Button
-                  title="Finalizar"
+                  title={translate("PicturePhotos.finishButton")}
                   onPress={handlePicturePhotos}
                   showLoadingIndicator={loading}
                 />
@@ -91,6 +105,7 @@ export const PicturePhotos: React.FC<
           )}
         </FormContainer>
       </Container>
+      <InstructionsModal modalVisible={modalVisible} goToSelectImage={handleSelectImage} setModalVisible={()=>setModalVisible(!modalVisible)}  />
     </ScrollView>
   );
 };
