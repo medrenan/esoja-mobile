@@ -112,7 +112,6 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
           updatePlot
           );
         } catch (error) {
-          console.log(error.message);
         }
 
         const newSample = {
@@ -128,7 +127,6 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
           await api.post('/sample', newSample);
           removeData();
         } catch (error) {
-          console.log(error.message);
           
         }
     },
