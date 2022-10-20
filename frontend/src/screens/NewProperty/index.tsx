@@ -83,7 +83,6 @@ export const NewProperty: React.FC<NewPropertyScreenRouteProps> = ({
       navigation.navigate('Properties');
       setLoading(false);
     } catch (error) {
-      console.log(error);
       Alert.alert(translate('newProperty.newPropertyAlert'));
       setLoading(false);
     }
