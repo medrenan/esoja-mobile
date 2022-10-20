@@ -46,7 +46,7 @@ export const getWeatherForecast = async (
 
     return list;
   } catch (err) {
-    return Alert.alert('Erro ao atualizar clima');
+    // return Alert.alert('Erro ao atualizar clima');
   }
 };
 
@@ -58,6 +58,6 @@ export const getWeatherDay = async (coordinates: Coordinates) => {
 
     return data;
   } catch (err) {
-    throw new Error('Não foi possivel atualizar');
+    // throw new Error('Não foi possivel atualizar');
   }
 };
