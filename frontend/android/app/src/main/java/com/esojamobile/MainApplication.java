@@ -12,13 +12,14 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
-
+import com.facebook.react.shell.MainReactPackage;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
 
 import com.facebook.react.bridge.JSIModulePackage;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -32,11 +33,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      @SuppressWarnings("UnnecessaryLocalVariable")
-      List<ReactPackage> packages = new PackageList(this).getPackages();
-      // Packages that cannot be autolinked yet can be added manually here, for example:
-      packages.add(new ReactNativeFirebaseAppPackage());
-      return packages;
+      return Arrays.asList(
+        new MainReactPackage(),
+        new ReactNativeFirebaseAppPackage());
     }
 
     @Override
