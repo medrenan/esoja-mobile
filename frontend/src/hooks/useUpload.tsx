@@ -11,7 +11,7 @@ import {  api2 } from '../data/services/api';
 
 interface UploadContextData {
   pictureUpload: (
-    file: File,
+    file: any,
     folderPath: string
   ) => Promise<string >;
   selectImage: () => Promise<ImageData>;

@@ -28,7 +28,7 @@ export const PicturePhotos: React.FC<
   const [image, setImage] = useState({base64:'',uri:""});
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const { setPersistedGrains } = useSample();
+  const { setPersistedGrains,saveImage } = useSample();
 
 
   const { selectImage } = useUpload();
@@ -51,6 +51,12 @@ export const PicturePhotos: React.FC<
 
   const handlePicturePhotos = async () => {
     setLoading(true);
+    try {
+      await saveImage(image.base64)
+    } catch (error) {
+      console.log(error.message);
+    }
+    
     try {
       await setPersistedGrains(image.base64);
       navigation.navigate('SampleOne');

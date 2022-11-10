@@ -53,8 +53,8 @@ export const NewProperty: React.FC<NewPropertyScreenRouteProps> = ({
   });
 
   const handleSelectImage = async () => {
-    const uri = await selectImage();
-    setImage(uri);
+    const image = await selectImage();
+    setImage(image.uri);
   };
 
   const handleGetCurrentPosition = async () => {
@@ -107,7 +107,7 @@ export const NewProperty: React.FC<NewPropertyScreenRouteProps> = ({
                   placeholder="newProperty.propertyPictureLabel"
                   updatePictureLabel="newProperty.propertyUpdatePictureLabel"
                   onPress={handleSelectImage}
-                  uri={image}
+                  uri={image.uri}
                 />
               </AvatarField>
               <TextInput
