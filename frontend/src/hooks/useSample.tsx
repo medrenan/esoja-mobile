@@ -33,11 +33,17 @@ interface Sample {
   cultiveId?: string;
 }
 
+interface Grains{
+  pods:string;
+  seeds:string;
+}
+
 interface SampleContextData {
   saveStep: (data: FieldValues) => Promise<void>;
   getPersistedData: () => Promise<Sample | null>;
   createSample: () => Promise<any>;
-  getGrainsEstimation:()=>Promise<any>;
+  setPersistedGrains:(file:string)=>Promise<any>;
+  getPersistedGrains:()=>Promise<Grains|null>;
   saveImage:(photoUri:string) => Promise<void>;
   deleteSample:(id:string) => Promise<any>;
 }
@@ -56,6 +62,10 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
     await AsyncStorage.setItem('@esoja:sample', JSON.stringify(data));
   };
 
+  const persistGrains = async (data: Grains) => {
+    await AsyncStorage.setItem('@esoja:grains', JSON.stringify(data));
+  };
+
   const removeData = async () => {
     await AsyncStorage.removeItem('@esoja:sample');
   };
@@ -71,6 +81,14 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
     }
     return null;
   }, [sample]);
+
+  const getPersistedGrains = async ():Promise<Grains|null>=>{
+    const data = await AsyncStorage.getItem('@esoja:grains');
+    if(data)
+    return JSON.parse(data)
+    else
+    return null
+  }
 
   const saveStep = useCallback(
     async (data: FieldValues) => {
@@ -142,23 +160,29 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
   }
 
   const getGrainsEstimation = useCallback(
-    async ()=>{
-        const fullData: Sample = await getPersistedData();
-        const grains = await api2.get(`/getGrains/${fullData?.cultiveId}`)
+    async (file):Promise<Grains>=>{
+
+        const grains = await api2.post(`/getGrains`,{file:file})
         return grains.data;
     },[sample]
   )
+
+  const setPersistedGrains = async(file:any) =>{
+    const grains:Grains = await getGrainsEstimation(file)
+    await persistGrains(grains);
+  }
 
   const providerValue = useMemo(
     () => ({
       saveStep,
       getPersistedData,
       createSample,
-      getGrainsEstimation,
+      setPersistedGrains,
+      getPersistedGrains,
       saveImage,
       deleteSample
     }),
-    [saveStep, getPersistedData, createSample,getGrainsEstimation,saveImage,deleteSample]
+    [saveStep, getPersistedData, createSample,setPersistedGrains,getPersistedGrains,saveImage,deleteSample]
   );
   return (
     <SampleContext.Provider value={providerValue}>
