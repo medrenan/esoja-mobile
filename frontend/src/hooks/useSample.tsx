@@ -112,9 +112,10 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
       
         const fullData: Sample = await getPersistedData();
         //colocar um link para uma imagem padrão depois
-        let photo="";
+        let photo;
+        const originalPhoto="https://imgs.search.brave.com/AJ2ZBW6LGNwCNS8HWl1nTJ2wjzFwKfufG6AuRFLeDcs/rs:fit:480:480:1/g:ce/aHR0cHM6Ly9pbWcu/aWZ1bm55LmNvL2lt/YWdlcy9mZmRmOWRl/MTU0NzUwOTU1OGM4/ZmQ1NjMzOWUxODdl/M2ZiZjFhNmUxYTUw/ZTNiMDBhYzRhYzFl/YmY5OTVkMjk0XzMu/anBn";
         try {          
-          photo = await pictureUpload(fullData.photo+"", 'sample')+"";
+          photo = (await pictureUpload(fullData.photo+"", 'sample'))|| originalPhoto ;
         } catch (error) {
           console.log(error.message);
         }
@@ -124,12 +125,12 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
           metersBetweenPlants: (Number(fullData?.metersBetweenPlants) || 0) / 100,
           photo: photo
         };
+        
         try {
   
           await api.put(
           `/cultive/sample-information/${fullData?.cultiveId}`,
-          updatePlot
-          );
+          updatePlot);
         } catch (error) {
           console.log(error.message);
         }
