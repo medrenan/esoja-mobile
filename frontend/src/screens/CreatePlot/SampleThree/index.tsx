@@ -34,7 +34,7 @@ const sampleThree = yup.object().shape({
 export const SampleThree: React.FC<
   SampleTwoScreenRouteProps
 > = ({ navigation }) => {
-  const { saveStep, getPersistedData,getGrainsEstimation } = useSample();
+  const { saveStep, getPersistedData,getPersistedGrains } = useSample();
   const { createSample } = useSample();
 
   const {
@@ -47,9 +47,9 @@ export const SampleThree: React.FC<
   });
 
   const handleCallAi = async ()=>{
-    const grains = await getGrainsEstimation();
-    setValue('grainsPlant1', grains.sample.grains.toString());
-    setValue('grainsPlant2', grains.sample.pods.toString());
+    const grains = await getPersistedGrains();
+    setValue('grainsPlant1', grains?.pods.toString());
+    setValue('grainsPlant2', grains?.pods.toString());
   }
 
   useEffect(() => {

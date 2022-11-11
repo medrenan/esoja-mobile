@@ -25,21 +25,21 @@ export const PicturePhotos: React.FC<
   PicturePhotosScreenRouteProps
 > = ({ navigation }) => {
   const { isConnected } = useAuth();
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState({base64:'',uri:""});
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const { saveImage } = useSample();
+  const { setPersistedGrains,saveImage } = useSample();
 
 
   const { selectImage } = useUpload();
 
   const handleSelectImage = async () => {
-    const uri = await selectImage();
-    if(!uri){
+    const image:{uri:string,base64:string} = await selectImage();
+    if(!image){
       errorNoAccess();
       return;
     }
-    setImage(uri);
+    setImage(image);
   };
 
   const errorNoAccess = ()=>{
@@ -52,7 +52,13 @@ export const PicturePhotos: React.FC<
   const handlePicturePhotos = async () => {
     setLoading(true);
     try {
-      await saveImage(image);
+      await saveImage(image.base64)
+    } catch (error) {
+      console.log(error.message);
+    }
+    
+    try {
+      await setPersistedGrains(image.base64);
       navigation.navigate('SampleOne');
     } catch (err) {
       setLoading(false);
@@ -78,7 +84,7 @@ export const PicturePhotos: React.FC<
                   placeholder="PicturePhotos.imagePlaceholder"
                   updatePictureLabel="PicturePhotos.imageUpdatePictureLabel"
                   onPress={() => setModalVisible(!modalVisible)}
-                  uri={image}
+                  uri={image.uri}
                 />
               </PictureContainer>
               <NextStepButton>
