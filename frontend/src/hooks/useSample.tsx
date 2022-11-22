@@ -161,14 +161,19 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
   }
 
   const getGrainsEstimation = useCallback(
-    async (file):Promise<Grains>=>{
+    async (file: String):Promise<Grains>=>{
 
-        const grains = await api2.post(`/getGrains`,{file:file})
+        const grains = await api2.post(`/getGrains`,JSON.stringify(file), {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        console.log(grains.data)
         return grains.data;
     },[sample]
   )
 
-  const setPersistedGrains = async(file:any) =>{
+  const setPersistedGrains = async(file:String) =>{
     const grains:Grains = await getGrainsEstimation(file)
     await persistGrains(grains);
   }
