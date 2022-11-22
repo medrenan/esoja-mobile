@@ -57,13 +57,14 @@ export const PicturePhotos: React.FC<
       console.log(error.message);
     }
     
-    try {
-      await setPersistedGrains(image.base64);
+    try {   
+      await setPersistedGrains(image.base64.toString());
       navigation.navigate('SampleOne');
     } catch (err) {
       setLoading(false);
       Alert.alert('Numberplants.alert'
       );
+      console.log(err)
     }
   };
 
