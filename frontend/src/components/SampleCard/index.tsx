@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
 import { Sample } from '../../data/Model/Sample';
-import { SampleData, SampleInformationContainer, SampleName } from './styles';
+import { SampleData, SampleInformationContainer, SampleName, Icon,SampleDelete} from './styles';
 import { translate } from '../../data/I18n';
 import { DeleteButton } from '../../components/DeleteButton';
 import { Alert, View, } from 'react-native';
 import { useSample } from '../../hooks/useSample';
+import { Avatar, Button } from 'react-native-paper';
 
 interface SampleCardProps {
   sample: Sample;
@@ -44,6 +45,12 @@ export const SampleCard: React.FC<SampleCardProps> = ({ sample,updateScreenFunct
           </SampleData>
         )}
         </View>
+        <SampleDelete>
+
+          <Button>
+                <Icon name="edit" />
+          </Button>
+        </SampleDelete>
       <DeleteButton style={{width:75}} onPress={()=>{removeSample()}} />
     </SampleInformationContainer>
   );
