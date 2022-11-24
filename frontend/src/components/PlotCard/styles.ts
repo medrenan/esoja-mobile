@@ -3,7 +3,7 @@ import { RFHeight, RFWidth, RFFontSize } from '../../utils/getResponsiveSizes';
 import { RectButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
-export const PlotInformationContainer = styled.TouchableOpacity`
+export const PlotInformationContainer = styled.View`
   flex-flow: row;
   align-items: center;
   padding: ${RFWidth(16)}px;
@@ -24,7 +24,7 @@ export const InformationContainer = styled.View`
 `;
 
 export const ViewInformation = styled.TouchableOpacity`
-  maxWidth:80%;
+  maxWidth:70%;
   
 `;
 
@@ -60,3 +60,16 @@ export const AddButton = styled(RectButton)`
   margin: 35px;
   border-radius: 50px;
 `;
+
+export const EditPlot = styled.TouchableOpacity`
+  
+`;
+export const DeletePlot = styled.TouchableOpacity`
+  
+`;
+
+export const ViewButtons = styled.View`
+flexDirection: column;
+alignItems: center;
+justify-content: space-between;
+flex: 1;`

@@ -5,6 +5,7 @@ import { translate } from '../../data/I18n';
 import { Plot } from '../../data/Model/Plot';
 import { AddButton } from '../../screens/Plots/styles';
 import { defaultImage } from '../../utils/default';
+import { DeleteButton } from '../../components/DeleteButton';
 
 import {
   InformationContainer,
@@ -14,7 +15,10 @@ import {
   PlotName,
   PlotProduction,
   Icon,
-  ViewInformation
+  ViewInformation,
+  EditPlot,
+  DeletePlot,
+  ViewButtons
 } from './styles';
 
 interface PlotCardProps {
@@ -42,9 +46,14 @@ export const PlotCard: React.FC<PlotCardProps> = ({ plot, onPress }) => {
                 </PlotProduction>
                 )}
             </ViewInformation>
-            <Button>
-              <Icon name="edit" />
-            </Button>
+            <ViewButtons>
+              <EditPlot>
+                <Button>
+                  <Icon name="edit" />
+                </Button>
+              </EditPlot>
+              <DeleteButton style={{width:30}} />
+            </ViewButtons>
           </InformationContainer>
 
     </PlotInformationContainer>
