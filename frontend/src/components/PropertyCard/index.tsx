@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Button } from 'react-native-paper';
 import { Property } from '../../data/Model/Property';
 import { defaultImage } from '../../utils/default';
 import { translate } from '../../data/I18n';
@@ -7,7 +7,9 @@ import {
   InformationContainer,
   PropertyCity,
   PropertyInformationContainer,
-  PropertyName
+  PropertyName,
+  Icon,
+  EditProperty
 } from './styles';
 
 interface PropertyCardProps {
@@ -31,6 +33,11 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         </PropertyCity>
         <PropertyCity>{property?.city || ''}</PropertyCity>
       </InformationContainer>
+        <EditProperty>
+          <Button>
+              <Icon name="edit" />
+          </Button>
+        </EditProperty>
     </PropertyInformationContainer>
   );
 };

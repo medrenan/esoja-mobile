@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { RFWidth } from '../../utils/getResponsiveSizes';
+import { RFWidth, RFFontSize  } from '../../utils/getResponsiveSizes';
+import { Feather } from '@expo/vector-icons';
 
 export const PropertyInformationContainer = styled.TouchableOpacity`
   flex-flow: row;
@@ -22,3 +23,10 @@ export const PropertyName = styled.Text`
 export const PropertyCity = styled.Text`
   color: ${({ theme }) => theme.colors.text};
 `;
+export const Icon = styled(Feather)`
+  font-size: ${RFFontSize(35)}px;
+
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const EditProperty = styled.TouchableOpacity``;
