@@ -34,7 +34,7 @@ const sampleOne = yup.object().shape({
 export const SampleOne: React.FC<PicturePhotosScreenRouteProps> = ({
   navigation
 }) => {
-  const { saveStep, getPersistedData,getPersistedGrains } = useSample();
+  const { saveStep, getPersistedData, getPersistedGrains } = useSample();
 
   const {
     control,
@@ -45,7 +45,7 @@ export const SampleOne: React.FC<PicturePhotosScreenRouteProps> = ({
     resolver: yupResolver(sampleOne)
   });
 
-  const handleCallAi = async ()=>{
+  const handleCallAi = async () => {
     const grains = await getPersistedGrains();
 
     setValue('grainsPlant1', grains?.pods.toString());

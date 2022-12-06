@@ -33,19 +33,19 @@ interface Sample {
   cultiveId?: string;
 }
 
-interface Grains{
-  pods:string;
-  seeds:string;
+interface Grains {
+  pods: string;
+  seeds: string;
 }
 
 interface SampleContextData {
   saveStep: (data: FieldValues) => Promise<void>;
   getPersistedData: () => Promise<Sample | null>;
   createSample: () => Promise<any>;
-  setPersistedGrains:(file:string)=>Promise<any>;
-  getPersistedGrains:()=>Promise<Grains|null>;
-  saveImage:(photoUri:string) => Promise<void>;
-  deleteSample:(id:string) => Promise<any>;
+  setPersistedGrains: (file: string) => Promise<any>;
+  getPersistedGrains: () => Promise<Grains | null>;
+  saveImage: (photoUri: string) => Promise<void>;
+  deleteSample: (id: string) => Promise<any>;
 }
 
 type SampleContextProps = {
@@ -82,13 +82,11 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
     return null;
   }, [sample]);
 
-  const getPersistedGrains = async ():Promise<Grains|null>=>{
+  const getPersistedGrains = async (): Promise<Grains | null> => {
     const data = await AsyncStorage.getItem('@esoja:grains');
-    if(data)
-    return JSON.parse(data)
-    else
-    return null
-  }
+    if (data) return JSON.parse(data);
+    else return null;
+  };
 
   const saveStep = useCallback(
     async (data: FieldValues) => {
@@ -98,85 +96,82 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
     [sample]
   );
 
-    const saveImage = useCallback(
+  const saveImage = useCallback(
     async (photoUri: string) => {
-      const sample2= {...sample,photo:photoUri}
+      const sample2 = { ...sample, photo: photoUri };
       setSample(prev => ({ ...prev, ...sample2 }));
       await persistData({ ...sample, ...sample2 });
     },
     [sample]
   );
 
-  const createSample = useCallback(
-    async () => {
-      
-        const fullData: Sample = await getPersistedData();
-        //colocar um link para uma imagem padrão depois
-        let photo;
-        const originalPhoto="https://imgs.search.brave.com/AJ2ZBW6LGNwCNS8HWl1nTJ2wjzFwKfufG6AuRFLeDcs/rs:fit:480:480:1/g:ce/aHR0cHM6Ly9pbWcu/aWZ1bm55LmNvL2lt/YWdlcy9mZmRmOWRl/MTU0NzUwOTU1OGM4/ZmQ1NjMzOWUxODdl/M2ZiZjFhNmUxYTUw/ZTNiMDBhYzRhYzFl/YmY5OTVkMjk0XzMu/anBn";
-        try {          
-          photo = (await pictureUpload(fullData.photo+"", 'sample'))|| originalPhoto ;
-        } catch (error) {
-          console.log(error.message);
-        }
+  const createSample = useCallback(async () => {
+    const fullData: Sample = await getPersistedData();
+    //colocar um link para uma imagem padrão depois
+    let photo;
+    const originalPhoto =
+      'https://imgs.search.brave.com/AJ2ZBW6LGNwCNS8HWl1nTJ2wjzFwKfufG6AuRFLeDcs/rs:fit:480:480:1/g:ce/aHR0cHM6Ly9pbWcu/aWZ1bm55LmNvL2lt/YWdlcy9mZmRmOWRl/MTU0NzUwOTU1OGM4/ZmQ1NjMzOWUxODdl/M2ZiZjFhNmUxYTUw/ZTNiMDBhYzRhYzFl/YmY5OTVkMjk0XzMu/anBn';
+    try {
+      photo =
+        (await pictureUpload(fullData.photo + '', 'sample')) || originalPhoto;
+    } catch (error) {
+      console.log(error.message);
+    }
 
-        const updatePlot = {
-          plantsPerMeter: fullData?.plantsPerMeter,
-          metersBetweenPlants: (Number(fullData?.metersBetweenPlants) || 0) / 100,
-          photo: photo
-        };
-        
-        try {
-  
-          await api.put(
-          `/cultive/sample-information/${fullData?.cultiveId}`,
-          updatePlot);
-        } catch (error) {
-          console.log(error.message);
-        }
+    const updatePlot = {
+      plantsPerMeter: fullData?.plantsPerMeter,
+      metersBetweenPlants: (Number(fullData?.metersBetweenPlants) || 0) / 100,
+      photo: photo
+    };
 
-        const newSample = {
-          cultiveId: fullData?.cultiveId,
-          samples: [
-            { ...fullData?.plantA, name: 'Amostra 1' },
-            { ...fullData?.plantB, name: 'Amostra 2' },
-            { ...fullData?.plantC, name: 'Amostra 3' }
-          ]
-        };
-        
-        try {
-          await api.post('/sample', newSample);
-          removeData();
-        } catch (error) {
-          console.log(error.message);
-          
-        }
-    },
-    [getPersistedData, pictureUpload]
-  );
+    try {
+      await api.put(
+        `/cultive/sample-information/${fullData?.cultiveId}`,
+        updatePlot
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
 
-  const deleteSample = async (id:string)=>{
-      const res = await api.delete('/sample/'+id);
-      return res;
-  }
+    const newSample = {
+      cultiveId: fullData?.cultiveId,
+      samples: [
+        { ...fullData?.plantA, name: 'Amostra 1' },
+        { ...fullData?.plantB, name: 'Amostra 2' },
+        { ...fullData?.plantC, name: 'Amostra 3' }
+      ]
+    };
+
+    try {
+      await api.post('/sample', newSample);
+      removeData();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [getPersistedData, pictureUpload]);
+
+  const deleteSample = async (id: string) => {
+    const res = await api.delete('/sample/' + id);
+    return res;
+  };
 
   const getGrainsEstimation = useCallback(
-    async (file: String):Promise<Grains>=>{
+    async (file: string): Promise<Grains> => {
+      const grains = await api2.post(`/getGrains`, JSON.stringify(file), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log(grains.data);
+      return grains.data;
+    },
+    [sample]
+  );
 
-        const grains = await api2.post(`/getGrains`,JSON.stringify(file), {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        console.log(grains.data)
-        return grains.data;
-    },[sample]
-  )
-
-  const setPersistedGrains = async(file:String) =>{
-    const grains:Grains = await getGrainsEstimation(file)
+  const setPersistedGrains = async (file: string) => {
+    const grains: Grains = await getGrainsEstimation(file);
     await persistGrains(grains);
-  }
+  };
 
   const providerValue = useMemo(
     () => ({
@@ -188,7 +183,15 @@ const SampleProvider: React.FC<SampleContextProps> = ({ children }) => {
       saveImage,
       deleteSample
     }),
-    [saveStep, getPersistedData, createSample,setPersistedGrains,getPersistedGrains,saveImage,deleteSample]
+    [
+      saveStep,
+      getPersistedData,
+      createSample,
+      setPersistedGrains,
+      getPersistedGrains,
+      saveImage,
+      deleteSample
+    ]
   );
   return (
     <SampleContext.Provider value={providerValue}>
