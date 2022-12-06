@@ -15,7 +15,7 @@ interface PropertyContextData {
   createPorperty: (data: FieldValues) => Promise<void>;
   getProperties: (query: Query) => Promise<Property[]>;
   getProperty: (propertyId: string, query: Query) => Promise<Property>;
-  deleteProperty:(id:string) => Promise<any>;
+  deleteProperty: (id: string) => Promise<any>;
 }
 
 type PropertyContextProps = {
@@ -26,7 +26,9 @@ const PropertyContext = createContext({} as PropertyContextData);
 
 const PropertyProvider: React.FC<PropertyContextProps> = ({ children }) => {
   const createPorperty = useCallback(async (data: FieldValues) => {
-    await api.post('/property', data);
+    await api
+      .post('/property', data)
+      .catch(err => console.log(err.response.data.message));
   }, []);
 
   const getProperties = useCallback(async (query: Query) => {
@@ -37,6 +39,7 @@ const PropertyProvider: React.FC<PropertyContextProps> = ({ children }) => {
       });
       return data;
     } catch (err: any) {
+      console.log(err.response.data.message);
       Alert.alert(err.response.data.message || err.response.data.message[0]);
       return [];
     }
@@ -50,10 +53,10 @@ const PropertyProvider: React.FC<PropertyContextProps> = ({ children }) => {
     return data;
   }, []);
 
-  const deleteProperty = async (id:string)=>{
-    const res = await api.delete('/property/'+id)
+  const deleteProperty = async (id: string) => {
+    const res = await api.delete('/property/' + id);
     return res;
-  }
+  };
 
   const providerValue = useMemo(
     () => ({

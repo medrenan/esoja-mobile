@@ -4,7 +4,9 @@
     "slug": "esoja-mobile",
     "scheme": "esoja-mobile",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "esoja-mobile"
     },
@@ -15,7 +17,11 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "android": {
+      "permissions":["INTERNET","SYSTEM_ALERT_WINDOW","MANAGE_DOCUMENTS","READ_INTERNAL_STORAGE","READ_EXTERNAL_STORAGE","WRITE_EXTERNAL_STORAGE","WRITE_SETTINGS","CAMERA_ROLL","ACCESS_MEDIA_LOCATION"],
+      "package": "com.rbd01.esojamobile"
+    }
   },
   "name": "esoja-mobile"
 }
